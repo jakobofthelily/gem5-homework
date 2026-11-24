@@ -1,0 +1,104 @@
+# gem5 Workshop Assignment #1
+
+Now that you've worked with the gem5 standard library, it's time to assemble your own system.
+
+> In this assignment, you will:
+>
+> - **Run** gem5 simulations by writing configuration scripts.
+> - **Assemble** gem5 standard library components to fit a system specification.
+> - **Modify** gem5 standard library components by parameterizing existing models. 
+
+This assignment builds on Units I and II. You may want to refer to them as you work.
+
+| Lesson | Relevant Topics |
+|---|---|
+| [Your first configuration script](https://github.com/CUB-gem5-bootcamp/lessons/blob/19d28b02c4ec791cf0c7f768f5f2746c9fe01186/01-introduction/04-first-config-script.md) | Running gem5 with a configuration script, identifying key components of a configuration script (board, processor, cache hierarchy, memory, workload), reading `stats.txt`. |
+| [The gem5 standard library and resources](https://github.com/CUB-gem5-bootcamp/lessons/blob/19d28b02c4ec791cf0c7f768f5f2746c9fe01186/02-beginning-simulation/01-stdlib-resources.md) | Importing and using standard library components in configuration scripts. |
+| [Modeling processors in gem5](https://github.com/CUB-gem5-bootcamp/lessons/blob/19d28b02c4ec791cf0c7f768f5f2746c9fe01186/02-beginning-simulation/02-processors.md) | gem5 CPU models (`Simple`, `O3`, `Minor`), parameterizing a gem5 CPU by wrapping an existing model. |
+| [Modeling caches in gem5](https://github.com/CUB-gem5-bootcamp/lessons/blob/19d28b02c4ec791cf0c7f768f5f2746c9fe01186/02-beginning-simulation/03-caches.md) | gem5 classic caches, assembling a cache hierarchy from classic cache models. |
+| [Modeling memory in gem5](https://github.com/CUB-gem5-bootcamp/lessons/blob/19d28b02c4ec791cf0c7f768f5f2746c9fe01186/02-beginning-simulation/04-memory.md) | gem5 memory models, building a custom `ChanneledMemory`. |
+
+## Instructions
+
+For this assignment, you'll be building and simulating a simple system based on a short specification.
+
+Your first step will be to source the processor, cache hierarchy, and memory system. You will not be able to find these components "as-is" in the standard library; you will need to identify and parameterize the relevant gem5 models yourself as you've previously done in Unit II.
+
+After building the components of the system, you will define it in a configuration script and simulate running a benchmark on it.
+
+### Specification
+
+Below are the specifications for the processor, cache hierarchy, and memory system you will simulate.
+
+The **processor** should:
+- Execute instructions *in-order*,
+- Have two cores,
+- Use the RISC-V ISA,
+- Have 4-instruction decode and execute input widths,
+- Have an execute branch delay of 2 clock cycles.
+
+> Given these specifications, only one of gem5's CPU models is appropriate to use!
+
+The **cache hierarchy** should have:
+- A 32 KiB, 2-way associative private L1 instruction cache per core,
+- A 24 KiB, 2-way associative private L1 data cache per core,
+- A 2 MiB, 8-way associative shared L2 cache,
+- An 4 MiB, 16-way associative shared L3 cache.
+  - Tag latency of 20 cycles, data latency of 20 cycles, response latency of 1 cycle, 20 MSHRs, max 12 accesses per MSHR.
+
+> <details>
+> <summary markdown="span"> <b>Cache hierarchy diagram (2 cores)</b> </summary>
+> 
+> ![A cache hierarchy diagram. Two cores each have an L1I cache and an L1D cache. The L1 caches for each core are connected to a shared L2 crossbar. The L2 crossbar is connected to a shared L2 cache. The L2 cache is connected to an L3 crossbar, which is connected to a shared L3 cache. The L3 cache is connected to a membus.](img/a1-cache.png)
+>
+> </details>
+
+<br>
+
+The **memory system** should be:
+- 16 GiB,
+- Dual-channel, 64-byte interleaving size
+- Using the DDR5-6400 4x8 DIMM.
+
+The **CPU clock speed** of the system should be 4GHz.
+
+> All parameters not explicitly stated here can be left with "default" values.
+
+### Simulation
+
+Once all components are built, you will assemble them together in a configuration script and simulate a matrix multiply benchmark on your new system. You will need to obtain the appropriate resource, `riscv-matrix-multiply-run`, from gem5 resources, and set it as the workload for your board.
+
+### Statistics
+
+After the simulation finishes running, you will explore `stats.txt` and identify a few key statistics. You should look for statistics that measure the following:
+
+- The number of seconds elapsed in-simulation,
+- The core-level IPC (instructions per cycle) of each core of the CPU,
+- The overall miss rate of the L2 cache,
+- The total number of read requests accepted by each memory controller.
+
+## Getting Started
+
+Three Python files, `a1_processor.py`, `a1_cache_hierarchy.py`, and `a1_memory.py`, have been provided for you. `a1_processor.py` and `a1_memory.py` are empty; `a1_cache_hierarchy.py` includes some helper code to handle full-system- and I/O-related functionality. You should write your custom components in these files to eventually import into your configuration script.
+
+> Referencing the relevant section of Unit II (processors, caches, memory) for each component will help give you an idea of how these files should be structured!
+
+A skeleton configuration script, `a1_script.py` has also been provided for you. The script provides a board and simulator, but not any of the components or the board's workload. You should import your custom components (and any other necessary components), instantiate them appropriately, and obtain the appropriate matrix multiply workload.
+
+> The script is marked with several TODO comments:
+>
+> ```python
+> # TODO
+> ```
+>
+> in every place you should expect to add one or more lines. Feel free to delete these comments as you edit the file.
+
+Finally, a file named `statistics.md` is provided for you. Once your components are built and your configuration script runs without error, you should search `stats.txt` for the relevant statistics listed in this file (also listed above). Write down the full name of each statistic (e.g. `hostInstRate`, `board.memory.mem_ctrl0.numStayWriteState`, etc.) and its associated value.
+
+## Submission
+
+You should submit:
+
+- Your filled-in simulation files: `a1_script.py`, `a1_processor.py`, `a1_cache_hierarchy.py`, and `a1_memory.py`,
+- Your answers for the requested simulation statistics: `statistics.md`
+- `config.ini` and `stats.txt` from the simulation output directory (`m5out`).
