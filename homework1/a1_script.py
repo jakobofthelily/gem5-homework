@@ -18,11 +18,11 @@ from gem5.components.cachehierarchies.classic.private_l1_shared_l2_cache_hierarc
 processor = RiscvProcessor()
 
 cache = PrivateL1SharedL2SharedL3CacheHierarchy(
-    l1d_size="24KiB", 
+    l1d_size="16KiB", 
     l1i_size="32KiB",
     l2_size="2MiB",
     l3_size="4MiB",
-    l1d_assoc=3,
+    l1d_assoc=2,
     l1i_assoc=2,
     l2_assoc=8,
     l3_assoc=16
