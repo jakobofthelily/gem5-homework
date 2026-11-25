@@ -3,7 +3,7 @@ Assignment #1: Assemble-Your-Own-System
 
 Parameterized processor component
 
-Name: 
+Name: Sebastian Acerbi
 """
 
 from gem5.isas import ISA

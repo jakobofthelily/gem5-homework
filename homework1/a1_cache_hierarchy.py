@@ -3,7 +3,7 @@ Assignment #1: Assemble-Your-Own-System
 
 Custom cache hierarchy component
 
-Name: 
+Name: Sebastian Acerbi
 """
 
 from gem5.isas import ISA
@@ -91,13 +91,18 @@ class PrivateL1SharedL2SharedL3CacheHierarchy(AbstractClassicCacheHierarchy):
         size=self._l1d_size, 
         assoc=self._l1d_assoc
         )
+
         cluster.l1icache = L1ICache(
             size=self._l1i_size, 
             assoc=self._l1i_assoc,
             writeback_clean=False
         )
+
+        # Connect each L1 cache ports
         core.connect_icache(cluster.l1icache.cpu_side)
         core.connect_dcache(cluster.l1dcache.cpu_side)
+        cluster.l1icache.mem_side = l2_bus.cpu_side_ports
+        cluster.l1dcache.mem_side = l2_bus.cpu_side_ports
 
         # Full-system mode magic
         cluster.iptw_cache = MMUCache(size="8KiB", writeback_clean=False)

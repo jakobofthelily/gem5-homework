@@ -31,13 +31,13 @@ board.memory.mem_ctrl1.dram.bytesInstRead::total
 **Statistic name(s):**
 
 ```txt
-YOUR ANSWER HERE
+simSeconds
 ```
 
 **Value(s):**
 
 ```txt
-YOUR ANSWER HERE
+0.009553
 ```
 
 ### Statistic #2
@@ -47,13 +47,15 @@ YOUR ANSWER HERE
 **Statistic name(s):**
 
 ```txt
-YOUR ANSWER HERE
+board.processor.cores0.core.ipc
+board.processor.cores1.core.ipc
 ```
 
 **Value(s):**
 
 ```txt
-YOUR ANSWER HERE
+0.888606
+0.000000
 ```
 
 ### Statistic #3
@@ -63,13 +65,13 @@ YOUR ANSWER HERE
 **Statistic name(s):**
 
 ```txt
-YOUR ANSWER HERE
+board.cache_hierarchy.l2_cache.overallMissRate::total
 ```
 
 **Value(s):**
 
 ```txt
-YOUR ANSWER HERE
+0.008853
 ```
 
 ### Statistic #4
@@ -79,11 +81,13 @@ YOUR ANSWER HERE
 **Statistic name(s):**
 
 ```txt
-YOUR ANSWER HERE
+board.memory.mem_ctrl0.readReqs
+board.memory.mem_ctrl1.readReqs
 ```
 
 **Value(s):**
 
 ```txt
-YOUR ANSWER HERE
+1300
+1297
 ```

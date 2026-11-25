@@ -3,7 +3,7 @@ Assignment #1: Assemble-Your-Own-System
 
 Parameterized memory component
 
-Name: 
+Name: Sebastian Acerbi
 """
 
 from gem5.components.memory.dram_interfaces.ddr5 import DDR5_6400_4x8
